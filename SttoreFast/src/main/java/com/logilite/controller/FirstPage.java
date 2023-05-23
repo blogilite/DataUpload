@@ -1,5 +1,7 @@
 package com.logilite.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -41,21 +43,28 @@ public class FirstPage extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String csvFile = "/home/bhautik/Downloads/students.csv";
 		String name = request.getParameter("add");
+		String line;
 
 		if (name.equals("Generate")) {
 			start = Instant.now();
-			try {
+			try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
 				ArrayList<Student> dt = new ArrayList<Student>();
-				for (int i = 1; i <= 10_00_000; i++) {
+
+				while ((line = br.readLine()) != null) {
 					Student st = new Student();
-					st.setsId(i);
-					st.setsName(generateRandomString(8));
-					st.setsAddress(generateRandomString(20));
-					st.setsEmail(generateRandomMail(8) + "@gmail.com");
-					st.setsNumber(generateRandomNumber(10));
-					// System.out.println(st.getsId() + " " + st.getsName() + " " + st.getsAddress()
-					// + " " + st.getsEmail() + " " + st.getsNumber());
+					String[] data = line.split(",");
+					// System.out.println(data[0] + data[1] + data[2] + data[3] + data[4]);
+
+					st.setsId(Integer.parseInt(data[0]));
+					st.setsName(data[1]);
+					st.setsAddress(data[2]);
+					st.setsEmail(data[3]);
+					st.setsNumber(Long.parseLong(data[4]));
+
+//					System.out.println(st.getsId() + " " + st.getsName() + " " + st.getsAddress() + " " + st.getsEmail()
+//							+ " " + st.getsNumber());
 					dt.add(st);
 				}
 
@@ -82,50 +91,38 @@ public class FirstPage extends HttpServlet {
 		// doGet(request, response);
 	}
 
-	private String generateRandomMail(int length) {
-		Instant start = Instant.now();
-		Random random = new Random();
-		StringBuilder sb = new StringBuilder(length);
-		for (int j = 0; j < length; j++) {
-			int randomIndex = random.nextInt(numAlpha.length());
-			char randomChar = numAlpha.charAt(randomIndex);
-			sb.append(randomChar);
-		}
-		Instant end = Instant.now();
-		Duration timeElapsed = Duration.between(start, end);
-		// System.out.println("f3" + timeElapsed);
-		return sb.toString();
-	}
+	// To generate Random mail Id
+	/*
+	 * private String generateRandomMail(int length) { Instant start =
+	 * Instant.now(); Random random = new Random(); StringBuilder sb = new
+	 * StringBuilder(length); for (int j = 0; j < length; j++) { int randomIndex =
+	 * random.nextInt(numAlpha.length()); char randomChar =
+	 * numAlpha.charAt(randomIndex); sb.append(randomChar); } Instant end =
+	 * Instant.now(); Duration timeElapsed = Duration.between(start, end); //
+	 * System.out.println("f3" + timeElapsed); return sb.toString(); }
+	 */
 
-	private static String generateRandomString(int length) {
-		Instant start = Instant.now();
-		Random random = new Random();
-		StringBuilder sb = new StringBuilder(length);
-		for (int j = 0; j < length; j++) {
-			int randomIndex = random.nextInt(alpha.length());
-			char randomChar = alpha.charAt(randomIndex);
-			sb.append(randomChar);
-		}
-		Instant end = Instant.now();
-		Duration timeElapsed = Duration.between(start, end);
-		// System.out.println("f1" + timeElapsed);
-		return sb.toString();
-	}
+	// To generate Random name
+	/*
+	 * private static String generateRandomString(int length) { Instant start =
+	 * Instant.now(); Random random = new Random(); StringBuilder sb = new
+	 * StringBuilder(length); for (int j = 0; j < length; j++) { int randomIndex =
+	 * random.nextInt(alpha.length()); char randomChar = alpha.charAt(randomIndex);
+	 * sb.append(randomChar); } Instant end = Instant.now(); Duration timeElapsed =
+	 * Duration.between(start, end); // System.out.println("f1" + timeElapsed);
+	 * return sb.toString(); }
+	 */
 
-	private long generateRandomNumber(int no) {
-		Instant start = Instant.now();
-		Random random = new Random();
-		long sb = 9;
-
-		for (int i = 1; i <= no - 1; i++) {
-			int randomIndex = random.nextInt(num.length());
-			sb = randomIndex + sb * 10;
-		}
-
-		Instant end = Instant.now();
-		Duration timeElapsed = Duration.between(start, end);
-		// System.out.println("f2" + timeElapsed);
-		return sb;
-	}
+	// To generate Random number
+	/*
+	 * private long generateRandomNumber(int no) { Instant start = Instant.now();
+	 * Random random = new Random(); long sb = 9;
+	 * 
+	 * for (int i = 1; i <= no - 1; i++) { int randomIndex =
+	 * random.nextInt(num.length()); sb = randomIndex + sb * 10; }
+	 * 
+	 * Instant end = Instant.now(); Duration timeElapsed = Duration.between(start,
+	 * end); // System.out.println("f2" + timeElapsed); return sb; }
+	 */
 
 }
