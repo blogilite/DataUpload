@@ -20,7 +20,7 @@ public class FirstPage extends HttpServlet {
 
 	// private static final String numAlpha =
 	// "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
-	// private static final String alpha =
+	// private static final String alpha =wq
 	// "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" asda;
 	// private static final String num = "0123456789" asdassa;
 	public Adddao ad;
